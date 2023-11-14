@@ -31,13 +31,13 @@ Detalle de Seccion
                         <div class="card-body">
                             <h2>{{$grasecyear}} </h2>
                             <hr class="w-25">
-                            <h3>Guia de Seccion</h3>
+                            <h3>Guia de Seccion:</h3>
                             <h3> {{$sec->name}}</h3>
 
-                            <h6>{{$sec->cupos}} Cupos Aperturados Para Esta Seccion</h6>
+                            <p class="fs-6 font-weight-bold text-primary">{{$sec->cupos}} Cupos Aperturados Para Esta Seccion</h6>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" style="width: {{ (100 - ($cuentaa / $sec->cupos) * 100) }}%;" aria-valuenow="{{ $cuentaa }}" aria-valuemin="0" aria-valuemax="{{ $sec->cupos }}">
-                                    {{ round((100 - ($cuentaa / $sec->cupos) * 100),1) }}% de Cupos Libres
+                                    {{ ( $sec->cupos -$cuentaa ) }} Cupos Libres
                                 </div>
                             </div>
 
@@ -55,13 +55,21 @@ Detalle de Seccion
 
                                 <th class="text-center" style="color: #fff;">Alumno(a)</th>
                                 <th class="text-center" style="color: #fff;">Matriculado en</th>
+                                @if(auth()->id()!= $sec->id )                              
+                                @can('ver-admin')
+                                <th class="text-center" style="color: #fff;">Cancelar Matricula</th>
+                                @endcan
+                                @else
+                                <th class="text-center" style="color: #fff;">Cancelar Matricula</th>
+
+                                @endif
+
 
 
                             </thead>
                             <tbody>
                                 @foreach ($data as $d)
                                 <tr>
-
 
                                     <td>
                                         <form id="alumno_form" action="{{route('detalle.alumno')}}">
@@ -74,9 +82,26 @@ Detalle de Seccion
 
                                     <td>
                                         <p>
-                                            {{$d->fecha_matricula ??''}}
+                                            {{$d->fecha_matricula??''}}
                                         </p>
                                     </td>
+
+                                    @if(auth()->id()!= $sec->id )
+                                    @can('ver-admin')
+                                    <td>
+                                        <form action="">
+                                            <button type="submit" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
+                                        </form>
+                                    </td>
+                                    @endcan                                    
+                                    @else
+                                    <td>
+                                        <form action="">
+                                            <button type="submit" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
+                                        </form>
+                                    </td>
+                                    @endif
+
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -97,7 +122,7 @@ Detalle de Seccion
         $('#order_table').DataTable({
             responsive: true,
 
-            autoWidth: false,
+            autoWidth: true,
 
             "language": {
                 "lengthMenu": "Mostrar _MENU_ registros por pagina",
@@ -174,6 +199,24 @@ Detalle de Seccion
         });
     });
 </script>
+
+
+<script>
+    const id_docente = '{{auth()->id()}}'
+    const id_guia = '{{$sec->id}}'
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        if (id_guia != id_docente) {
+
+
+        } else {
+
+
+
+        }
+    });
+</Script>
 
 
 @endsection
