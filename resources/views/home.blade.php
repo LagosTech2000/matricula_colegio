@@ -21,6 +21,16 @@ Inicio
 
   {{-------------------------- NOTIFICACIONES FINAL----------------------------------------}}
 
+
+
+  <div id="custom-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" onclick="cerrarAlerta()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <p class="fs-3" id="alert-message">Bienvenido a la plataforma de matricula {{$year}}!</p>
+
+    </div>
+
   {{-------------------------- INICIO --------------------------}}
   <div class="section-body">
     <div class="row">
@@ -103,7 +113,12 @@ Inicio
   function refrescar() {
     location.reload();
   }
-  // FINAL recargar automaticamente el inico
+
+  function cerrarAlerta() {
+        document.getElementById("custom-alert").classList.remove("d-block");
+        document.getElementById("custom-alert").classList.add("d-none");
+    }
+
 </script>
 @endsection
 

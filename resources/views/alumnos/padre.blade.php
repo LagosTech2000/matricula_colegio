@@ -5,7 +5,7 @@ Asignar Padres
 @section('content')
 <section class="section">
     <div class="section-header" style="max-height: 3rem;">
-        <h5 class="page__heading">Asignar Padre o encargado al alumno(a) {{ucwords($alumno->nombre)}} {{ucwords($alumno-> apellido)}}</h5>
+        <h5 class="page__heading">Asignar Padre o encargado a {{ucwords($alumno->nombre)}} {{ucwords($alumno-> apellido)}}</h5>
     </div>
     {{-------------------------- NOTIFICACIONES INICIO--------------------------------------}}
     @if(Session::has('noti') )
@@ -55,10 +55,13 @@ Asignar Padres
 
                                     <input type="hidden" name="alumno" value="{{$alumno->id_alumno}}">
                                     <br>
-                                 <input class="form-control w-50 btn btn-outline-primary" type="submit" value="Guardar">
-                                       
-
+                                    <input class="form-control w-50 btn btn-outline-primary mb-1" type="submit" value="Guardar">
                                 </form>
+
+                                <button onclick="history.back()" class="w-50 btn btn-outline-primary">
+                                    Regresar
+                                </button>
+
 
                             </div>
                         </div>
@@ -79,18 +82,14 @@ Asignar Padres
                                     <td>{{ucwords($pxa->nombre)}} {{ucwords($pxa->apellido)}}</td>
                                     <td>{{$pxa->rol}}</td>
                                     <td>
-                                        <form method="POST" action="{{ route('alumno.padre.eliminar') }}">
+                                        <form onsubmit="return DeleteFunction()" method="POST" action="{{ route('alumno.padre.eliminar') }}">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="alumno" value="{{ $pxa->alumno_id}}">
                                             <input type="hidden" name="padre" value="{{ $pxa->padre_id}}">
-                                            
-                                        <button class="btn btn-danger px-1 py-1 rounded fas fa-trash" type="submit"></button>
+                                            <button class="btn btn-danger px-1 py-1 rounded fas fa-trash" type="submit"></button>
                                         </form>
-
-
                                     </td>
-
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -131,6 +130,14 @@ Asignar Padres
         });
 
     });
+
+    function DeleteFunction() {
+        if (confirm('¿seguro que desea borrar este encargado?'))
+            return true;
+        else {
+            return false;
+        }
+    }
 </script>
 
 <script>

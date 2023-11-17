@@ -32,30 +32,52 @@ ALUMNOS
                             <div class="container">
                                 <form method="post" action="{{ route('alumno.guardar') }}">
                                     @csrf
-                                    <h4 for="nombre">Nuevo Alumno(a)</h4>
+                                    <h4 for="nombre">Nuevo Estudiante</h4>
                                     <br>
-                                    <div class="row form-group">
-                                        <label for="nombre">Nombres</label>
-                                        <input required type="text" class="w-50 form-control" name="nombre" id="nombre" placeholder="Nombres...">
-                                    </div>
-                                    <div class="row form-group">
-                                        <label for="apellido">Apellidos</label>
-                                        <input required type="text" class="w-50 form-control" name="apellido" id="apellido" placeholder="Apellidos...">
+                                    <div class="row">
+                                      
+                                        <div class="col-md-5 form-group">
+                                            <label for="nombre">Nombres</label>
+                                            <input required type="text" class="w-50 form-control" name="nombre" id="nombre" placeholder="Nombres...">
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <label for="apellido">Apellidos</label>
+                                            <input required type="text" class="w-50 form-control" name="apellido" id="apellido" placeholder="Apellidos...">
+                                        </div>
+
+                                        <div class="col-md-5 form-group">
+                                            <label for="direccion">Direccion</label>
+                                            <textarea class="w-50 form-control" required ="direccion" name="direccion" id="direccion" cols="3" rows="5"></textarea>
+
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <label for="telefono">Telefono</label>
+                                            <input required type="tel" class="w-50 form-control" name="telefono" id="telefono" placeholder="Telefono">
+                                        </div>
+                                        
                                     </div>
 
+                                    
 
                                     <div class="row form-group">
-                                        <button type="submit" class="w-50 btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                                        <button type="submit" class="w-50 btn btn-outline-primary"><i class="fas fa-save"></i> Guardar</button>
 
                                     </div>
+
+                                    
                                 </form>
+
+                              
+                                    
                             </div>
                         </div>
                         <hr>
                         <table class="table table-striped table-bordered  table-sm text-center" style="width:100%; border:2px;" id="order_table">
                             <thead style="background-color:#315d9a;">
 
-                                <th class="w-50 text-center" style="color: #fff;">Alumno</th>
+                                <th class="w-50 text-center" style="color: #fff;">Estudiante</th>
+                                <th class="text-center" style="color: #fff;">Direccion</th>
+                                <th class="text-center" style="color: #fff;">Telefono</th>
                                 <th class="text-center" style="color: #fff;">Estado</th>
                                 <th class="text-center" style="color: #fff;">Editar</th>
                                 <th class="text-center" style="color: #fff;">Asignar Padre</th>
@@ -66,6 +88,8 @@ ALUMNOS
                                 @foreach ($data as $d)
                                 <tr>
                                     <td>{{$d->nombre}} {{$d->apellido}} </td>
+                                    <td>{{$d->direccion}} </td>
+                                    <td>{{$d->telefono}} </td>
 
                                     @if ($d->matriculado == 1)
                                     <td>Matriculado</td>
@@ -79,6 +103,8 @@ ALUMNOS
                                             <input type="hidden" name="id_alumno" value="{{ $d->id_alumno }}">
                                             <input type="hidden" name="nombre" value="{{ $d->nombre }}">
                                             <input type="hidden" name="apellido" value="{{ $d->apellido }}">
+                                            <input type="hidden" name="direccion" value="{{ $d->direccion }}">
+                                            <input type="hidden" name="telefono" value="{{ $d->telefono }}">
                                             <button class="btn btn-primary px-1 py-1 rounded fas fa-edit" type="submit">
 
                                         </form>
@@ -98,7 +124,7 @@ ALUMNOS
                                     </td>
 
                                     <td>
-                                        <form method="POST" action="{{ route('alumno.eliminar') }}">
+                                        <form method="POST"  onsubmit="return DeleteFunction()"  action="{{ route('alumno.eliminar') }}">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id_alumno" value="{{ $d->id_alumno}}">
@@ -146,6 +172,16 @@ ALUMNOS
         });
 
     });
+
+
+    function DeleteFunction() {
+    if (confirm('¿seguro que deseas borrar este estudiante?'))
+      return true;
+    else {
+      return false;
+    }
+  }
+
 </script>
 Í
 @endsection

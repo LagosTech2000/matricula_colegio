@@ -36,7 +36,7 @@ GRADOS
                     <label for="nombre">Grado o Carrera:</label>
                     <input required type="text" class="w-50 form-control" name="nombre" id="nombre" placeholder="Escribe aqui...">
                   </div>
-                  <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                  <button type="submit" class="btn w-25 btn-outline-primary"><i class="fas fa-save"></i> Guardar</button>
                 </form>
               </div>
             </div>
@@ -76,13 +76,13 @@ GRADOS
                   </td>
 
                   <td>
-                    <form method="POST" action="{{ route('grado.eliminar') }}">
+                    <form method="POST" onsubmit="return DeleteFunction()" action="{{ route('grado.eliminar') }}">
                       @csrf
                       @method('DELETE')
                       <input type="hidden" name="id_grado" value="{{ $d->id_grado }}">
                       <button class="btn btn-danger px-1 py-1 rounded fas fa-trash" type="submit"></button>
                     </form>
-
+            
 
                   </td>
 
@@ -124,6 +124,16 @@ GRADOS
     });
 
   });
+
+
+  function DeleteFunction() {
+    if (confirm('¿seguro que deseas borrar este grado o carrera?'))
+      return true;
+    else {
+      return false;
+    }
+  }
+
 </script>
 @endsection
 

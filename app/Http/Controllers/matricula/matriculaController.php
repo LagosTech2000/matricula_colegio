@@ -25,50 +25,18 @@ class matriculaController extends Controller
         $year = date('Y');
         $month = date('m');
 
-        $cuenta_jobs=DB::table('jobs')
-            ->where('year', '=', $year)
-            ->count();
-
-        if ($cuenta_jobs==0) {
-
-
-            if ($month >= 11) {
-
-                DB::table('alumnos')
-                    ->update([
-                        'matriculado' => 0
-                    ]);
-
-                DB::table('detallematriculas')
-                    ->update(['activa' => 0]);
-
-                DB::table('jobs')
-                    ->insert([
-                        'year' => $year,
-                        'docente_id' => auth()->id()
-
-                    ]);
-            }
-        }
-
-        DB::table('detallematriculas as dm')
-            ->join('alumnos as a', 'a.id_alumno', 'dm.id_alumno')
-            ->where('dm.year', '<', date('Y'))
-            ->where('dm.activa', '=', 1)
-            ->update(['a.matriculado' => 0, 'dm.activa' => 0]);
-
         $alumno = DB::table('alumnos')
             ->where('matriculado', '=', 0)
             ->get();
 
         $cuenta_alumnos = $alumno->count();
 
-
         if ($month >= 11) {
             $year = $year + 1;
         }
 
         $gradoxseccion = DB::table('gradoxseccion')
+            ->where('year', '=', $year)
             ->select(
                 'id_gradoseccion',
                 'grado.id_grado AS grado_id_grado',
@@ -77,7 +45,7 @@ class matriculaController extends Controller
                 'cupos',
                 'gradoxseccion.docente',
                 'name',
-                DB::raw('(SELECT COUNT(*) FROM detallematriculas WHERE detallematriculas.id_grado =gradoxseccion.id_grado and gradoxseccion.seccion= detallematriculas.seccion and detallematriculas.year =' . $year . ' ) as cuentacupos')
+                DB::raw('(SELECT COUNT(*) FROM detallematriculas WHERE detallematriculas.id_grado =gradoxseccion.id_grado and gradoxseccion.seccion= detallematriculas.seccion and detallematriculas.year =' . $year . ' and detallematriculas.cancelada=0 ) as cuentacupos')
             )
             ->join('grado', 'grado.id_grado', '=', 'gradoxseccion.id_grado')
             ->leftJoin('users', 'id', '=', 'gradoxseccion.docente')
@@ -93,13 +61,14 @@ class matriculaController extends Controller
             'gradoxseccion' => $gradoxseccion,
             'cuenta_alumnos' => $cuenta_alumnos,
             'padres' => $padres,
-            'year'=>$year
+            'year' => $year
 
         ]);
     }
 
     public function save(Request $request)
     {
+
         if (isset($request->id_padre)) $idpadre = $request->id_padre;
 
         if (isset($request->nuevo)) {
@@ -143,11 +112,18 @@ class matriculaController extends Controller
         }
 
 
-        DB::table('padrexalumno')->insert([
-            'alumno_id' => $id_alumno,
-            'padre_id' => $idpadre,
-            'rol' => $request->padre_rol
-        ]);
+        DB::table('padrexalumno')->updateOrInsert(
+            [
+                'padre_id' => $idpadre,
+                'alumno_id' => $id_alumno
+            ],
+
+            [
+                'alumno_id' => $id_alumno,
+                'padre_id' => $idpadre,
+                'rol' => $request->padre_rol
+            ]
+        );
 
 
         $gradoxseccion = DB::table('gradoxseccion')
@@ -175,6 +151,7 @@ class matriculaController extends Controller
                 'id_maestro' => auth()->id()
 
             ]);
+
 
         Session::flash('noti', 'Se guardo la matricula!');
         Session::flash('color', 'success');

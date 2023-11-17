@@ -35,13 +35,20 @@ Detalle de Seccion
                             <h3> {{$sec->name}}</h3>
 
                             <p class="fs-6 font-weight-bold text-primary">{{$sec->cupos}} Cupos Aperturados Para Esta Seccion</h6>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: {{ (100 - ($cuentaa / $sec->cupos) * 100) }}%;" aria-valuenow="{{ $cuentaa }}" aria-valuemin="0" aria-valuemax="{{ $sec->cupos }}">
-                                    {{ ( $sec->cupos -$cuentaa ) }} Cupos Libres
+                            <div class=" progress" style="height: 1cm;">
+                                <div class="fs-4 progress-bar" role="progressbar" style=" width: {{ (100 - ($cuentaa / $sec->cupos) * 100) }}%;" aria-valuenow="{{ $cuentaa }}" aria-valuemin="0" aria-valuemax="{{ $sec->cupos }}">
+                                {{ ($sec->cupos - $cuentaa) === 1 ? '1 Cupo Libre' : ($sec->cupos - $cuentaa) . ' Cupos Libres' }}
+
                                 </div>
+                                @if(($sec->cupos -$cuentaa)==0 )
+                                <p class="text-dark underline ms-3 fs-5 ms-5font-weight-bold">
+                                
+                                No quedan cupos libres en esta seccion
+                               </p>
+                                @endif
                             </div>
 
-
+                            <br>
                             <br>
                             <button onclick="history.back()" class="btn btn-outline-primary">
                                 Regresar
@@ -55,17 +62,11 @@ Detalle de Seccion
 
                                 <th class="text-center" style="color: #fff;">Alumno(a)</th>
                                 <th class="text-center" style="color: #fff;">Matriculado en</th>
-                                @if(auth()->id()!= $sec->id )                              
-                                @can('ver-admin')
-                                <th class="text-center" style="color: #fff;">Cancelar Matricula</th>
-                                @endcan
-                                @else
-                                <th class="text-center" style="color: #fff;">Cancelar Matricula</th>
-
-                                @endif
-
-
-
+                              
+                                
+                                <th class="text-center" style="color: #fff;">Detalle</th>
+                                
+                  
                             </thead>
                             <tbody>
                                 @foreach ($data as $d)
@@ -76,31 +77,36 @@ Detalle de Seccion
                                             @csrf
                                             <input type="hidden" name="id_alumno" value="{{$d->id_alumno}}">
 
-                                            <button type="submit" class="btn btn-outline-primary fas fa-eye"> {{ucwords($d->alumno_nombre)}} {{ucwords($d->apellido)}}</button>
+                                            <button type="submit" class=" btn btn-outline-primary fas fa-eye"> {{ucwords($d->alumno_nombre)}} {{ucwords($d->apellido)}}</button>
                                         </form>
                                     </td>
 
                                     <td>
-                                        <p>
+                                        <p class="font-weight-bold fs-6">
                                             {{$d->fecha_matricula??''}}
                                         </p>
                                     </td>
 
-                                    @if(auth()->id()!= $sec->id )
+                                 
+                                    @if($d->cancelada == 0)
                                     @can('ver-admin')
+
                                     <td>
-                                        <form action="">
+                                        <form method="post" action="{{route('detalle.seccion.eliminar')}}">
+                                            @csrf
+                                            <input type="hidden" name="id_matricula" value="{{$d->id_detallematriculas}}">
                                             <button type="submit" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
                                         </form>
                                     </td>
-                                    @endcan                                    
+                                    @endcan
                                     @else
+
                                     <td>
-                                        <form action="">
-                                            <button type="submit" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
-                                        </form>
+                                        <p style="cursor:default;" class="btn btn-outline-danger font-weight-bold ">Cancelada en {{$d->fecha_cancelacion}}</p>
                                     </td>
                                     @endif
+                                    
+                                
 
                                 </tr>
                                 @endforeach
@@ -120,9 +126,9 @@ Detalle de Seccion
     $(document).ready(function() {
 
         $('#order_table').DataTable({
-            responsive: true,
+            responsive: false ,
 
-            autoWidth: true,
+            autoWidth: false,
 
             "language": {
                 "lengthMenu": "Mostrar _MENU_ registros por pagina",

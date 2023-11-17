@@ -74,7 +74,7 @@ ALUMNOS
                                     </div>
 
                                     <div class="row form-group">
-                                        <button type="submit" class="w-50 btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                                        <button type="submit" class="w-50 btn btn-outline-primary"><i class="fas fa-save"></i> Guardar</button>
 
                                     </div>
                                 </form>
@@ -118,7 +118,7 @@ ALUMNOS
 
 
                                     <td>
-                                        <form method="POST" action="{{ route('padres.eliminar') }}">
+                                        <form method="POST" onsubmit="return DeleteFunction()" action="{{ route('padres.eliminar') }}">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id_padre" value="{{ $d->id_padre}}">
@@ -212,6 +212,15 @@ ALUMNOS
         document.getElementById("custom-alert").classList.add("d-none");
 
     }
+
+
+    function DeleteFunction() {
+    if (confirm('¿seguro que deseas borrar este encargado?'))
+      return true;
+    else {
+      return false;
+    }
+  }
 </script>
 Í
 @endsection

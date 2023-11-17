@@ -19,13 +19,13 @@ class gradoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     function __construct()
-     {    
-         $this->middleware('permission:admin-ver|admin-crear|admin-editar|admin-borrar',['only'=>['index']]);
-         $this->middleware('permission:admin-crear',['only'=>['create','store']]);
-         $this->middleware('permission:admin-editar',['only'=>['edit','update']]);
-         $this->middleware('permission:admin-borrar',['only'=>['destroy']]);
-     }
+    function __construct()
+    {
+        $this->middleware('permission:admin-ver|admin-crear|admin-editar|admin-borrar', ['only' => ['index']]);
+        $this->middleware('permission:admin-crear', ['only' => ['nuevo', 'guardar']]);
+        $this->middleware('permission:admin-editar', ['only' => ['edit', 'editar']]);
+        $this->middleware('permission:admin-borrar', ['only' => ['destroy']]);
+    }
 
     public function index()
     {
@@ -96,12 +96,20 @@ class gradoController extends Controller
         if (isset($request->id_grado)) {
             $_SESSION['grado'] = $request->id_grado;
         }
+        $year = date('Y');
+        $month = date('M');
+
+        if ($month >= 11) {
+            $year = $year + 1;
+        }
+
 
         $data = DB::table('gradoxseccion')
-            ->select('gradoxseccion.id_grado AS gradoxseccion_id_grado', 'grado.id_grado AS grado_id_grado', 'nombre', 'seccion', 'cupos','gradoxseccion.docente','name')
+            ->select('gradoxseccion.id_grado AS gradoxseccion_id_grado', 'grado.id_grado AS grado_id_grado', 'nombre', 'seccion', 'cupos', 'gradoxseccion.docente', 'name', 'year')
             ->where('gradoxseccion.id_grado', '=', $_SESSION['grado'])
+            ->where('year', '=', $year)
             ->join('grado', 'grado.id_grado', '=', 'gradoxseccion.id_grado')
-            ->leftJoin('users','id','=','gradoxseccion.docente')
+            ->leftJoin('users', 'id', '=', 'gradoxseccion.docente')
             ->get();
 
         $docentes = DB::table('users')->get();
@@ -112,19 +120,30 @@ class gradoController extends Controller
 
     public function seccionsave(Request $request)
     {
-        DB::table('gradoxseccion')            
+
+        $year = date('Y');
+        $month = date('m');
+
+        if ($month >= 11) {
+            $year = $year + 1;
+        }
+
+
+        DB::table('gradoxseccion')
             ->updateOrInsert([
                 'seccion' => $request->seccion,
                 'id_grado' => $request->id_grado,
+                'year' => $year
             ], [
                 'id_grado' => $request->id_grado,
                 'seccion' => $request->seccion,
                 'cupos' => $request->cupos,
-                'docente'=> $request->docente
+                'docente' => $request->docente,
+                'year' => $year
             ]);
-            Session::flash('noti', 'Se Guardo o Actualizo la Seccion!');
-            Session::flash('color', 'success');
-            Session::flash('msg', 'Exito!');
+        Session::flash('noti', 'Se Guardo o Actualizo la Seccion!');
+        Session::flash('color', 'success');
+        Session::flash('msg', 'Exito!');
 
 
 
@@ -139,9 +158,9 @@ class gradoController extends Controller
             ->where('seccion', $request->seccion)
             ->delete();
 
-            Session::flash('noti', 'Se elimino la seccion!');
-            Session::flash('color', 'danger');
-            Session::flash('msg', 'Exito!');
+        Session::flash('noti', 'Se elimino la seccion!');
+        Session::flash('color', 'danger');
+        Session::flash('msg', 'Exito!');
 
         return redirect()->route('grado.seccion');
     }

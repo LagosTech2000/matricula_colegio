@@ -32,23 +32,48 @@ GRADOS
                             <div class="container">
                                 <form method="post" action="{{ route('alumno.editar') }}">
                                     @csrf
-                                    <h4 for="nombre">Editar Alumno(a)</h4>
+                                    <h4 for="nombre">Editar Estudiante</h4>
                                     <br>
-                                    <div class="row form-group">
-                                        <label for="nombre">Nombres</label>
-                                        <input value="{{$data->nombre}}" required type="text" class="w-50 form-control" name="nombre" id="nombre" placeholder="Nombres...">
+                                    <div class="row">
+
+                                        <div class="col-md-5 form-group">
+                                            <label for="nombre">Nombres</label>
+                                            <input required type="text" class="w-50 form-control" value="{{$data->nombre}}" name="nombre" id="nombre" placeholder="Nombres...">
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <label for="apellido">Apellidos</label>
+                                            <input required type="text" class="w-50 form-control" name="apellido" value="{{$data->apellido}}" id="apellido" placeholder="Apellidos...">
+                                        </div>
+
+                                        <div class="col-md-5 form-group">
+                                            <label for="direccion">Direccion</label>
+                                            <textarea class="w-75 form-control" name="direccion" id="direccion" cols="30" rows="10">{{$data->direccion}}</textarea>
+
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <label for="telefono">Telefono(opcional)</label>
+                                            <input type="tel" class="w-50 form-control" name="telefono" value="{{$data->telefono}}" id="telefono" placeholder="Telefono">
+                                        </div>
+
                                     </div>
-                                    <div class="row form-group">
-                                        <label for="apellido">Apellidos</label>
-                                        <input required value="{{$data->apellido}}" type="text" class="w-50 form-control" name="apellido" id="apellido" placeholder="Apellidos...">
-                                    </div>
+
                                     <input type="hidden" name="id_alumno" value="{{$data->id_alumno}}">
 
-                                    
-                                    <div class="row form-group">
-                                        <button type="submit" class="w-50 btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                                    <div class="col-md-6 form-group">
+                                        <button type="submit" class="w-50 btn btn-outline-primary"><i class="fas fa-save"></i> Guardar</button>
                                     </div>
+                                    
+                                   
+
                                 </form>
+
+                                <div class="col-md-6 form-group">
+
+                                    <button onclick="history.back()" class="w-50 btn btn-outline-primary">
+                                        Regresar
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                         <hr>

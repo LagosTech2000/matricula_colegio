@@ -1,3 +1,3 @@
 <div class="footer-left">
-    footer &copy; {{ date('Y') }}
+    Colegio Santa Maria del Real &copy; {{ date('Y') }}
 </div>

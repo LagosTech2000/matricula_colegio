@@ -75,8 +75,8 @@
                                  {{-- 1 --}}
                               </div>
                               </div><br>
-                            <button style="margin-right: 1rem"  class="btn btn-primary" id="botonGuardar"  type="submit"  style="font-size: 13px" class="btn btn-primary"><i style="font-size: 15px" class="fa fa-check" aria-hidden="true"></i> Guardar</button>
-                                            <a href="{{ route('usuarios.index') }}" class="btn btn-danger" id="botonCancelar"  type="button"  style="font-size: 12px"><i style="font-size: 15px" class="fa fa-times" aria-hidden="true"></i> Cancelar</a>
+                            <button style="margin-right: 1rem"  class="btn btn-outline-primary" id="botonGuardar"  type="submit"  style="font-size: 13px" class="btn btn-primary"><i style="font-size: 15px" class="fa fa-check" aria-hidden="true"></i> Guardar</button>
+                                            <a href="{{ route('usuarios.index') }}" class="btn btn-outline-danger" id="botonCancelar"  type="button"  style="font-size: 12px"><i style="font-size: 15px" class="fa fa-times" aria-hidden="true"></i> Cancelar</a>
   
                             </div>
                             {!! Form::close() !!}

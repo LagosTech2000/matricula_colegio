@@ -77,8 +77,8 @@
                 {{\Illuminate\Support\Facades\Auth::user()->email}}
             </div>
             @can('admin-ver')
-            <a class="dropdown-item has-icon edit-profile" href="#" data-id="{{ \Auth::id() }}">
-                <i class="fa fa-user"></i>Edit Profile</a>
+            <a class="dropdown-item has-icon edit-profile" href="{{route('usuarios.edit', auth()->id()) }}" data-id="{{ \Auth::id() }}">
+                <i class="fa fa-user"></i>Editar Perfil</a>
             @endcan
 
 

@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Tegucigalpa',
 
     /*
     |--------------------------------------------------------------------------
@@ -234,6 +234,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         //    este es para datables
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        //estos para graficos
         'Charts' => ConsoleTVs\Charts\Charts::class,         
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class
     ])->toArray(),

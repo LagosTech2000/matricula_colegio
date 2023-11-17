@@ -71,7 +71,7 @@ Route::post('/matricula/index', [App\Http\Controllers\matricula\matriculaControl
 Route::get('/detalle/alumno', [App\Http\Controllers\detalle\detalleController::class, 'detallealumno'])->name('detalle.alumno');
 Route::get('/detalle/matricula', [App\Http\Controllers\detalle\detalleController::class, 'detallematricula'])->name('detalle.matricula');
 Route::get('/detalle/seccion', [App\Http\Controllers\detalle\detalleController::class, 'detalleseccion'])->name('detalle.seccion');
-
+Route::post('/detalle/seccion', [App\Http\Controllers\detalle\detalleController::class, 'cancelar'])->name('detalle.seccion.eliminar');
 //________________________________________DETALLE(FINAL)______________________________________________________//
 
 
@@ -87,23 +87,3 @@ Route::post('/padres/editar', [App\Http\Controllers\padre\padreController::class
 
 
 
-
-
-
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

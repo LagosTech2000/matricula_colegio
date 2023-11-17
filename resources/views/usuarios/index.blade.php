@@ -47,7 +47,7 @@ Maestros
 
                 <div class="media-body">
                   {{-- <a class="btn btn-primary" href="{{ route('usuarios.create') }}">nuevo</a> --}}
-                  <a href="{{ route('usuarios.create') }}" class="btn btn-primary" id="botonCancelar" type="button" style="font-size: 12px"><i style="font-size: 15px" class="fa fa-user-circle" aria-hidden="true"></i> Crear Maestro</a>
+                  <a href="{{ route('usuarios.create') }}" class="btn btn-outline-primary" id="botonCancelar" type="button" style="font-size: 12px"><i style="font-size: 15px" class=" fa fa-user-circle" aria-hidden="true"></i> Crear Maestro</a>
                   {{-- <p>creacion de nuevos usuarios</p> --}}
                 </div>
               </li>
@@ -59,7 +59,8 @@ Maestros
 
                 <th class="text-center" style="color: #fff;">Nombre</th>
               <th class="text-center" style="color: #fff ">Correo</th>                
-                <th class="text-center" style="color: #fff;">Accion</th>
+                <th class="text-center" style="color: #fff;">Editar</th>
+                <th class="text-center" style="color: #fff;">Eliminar</th>
 
               </thead>
               <tbody>
@@ -72,14 +73,17 @@ Maestros
                 
                   <td>
                     <a class="btn btn-primary btn-sm" href="{{route('usuarios.edit', $usuario->id)}}"><i class="fas fa-edit"></i></a>
+                  </td>
                    
-                    {{-- laravel Collective  --}}
-                    {!! Form::open(['method'=>'DELETE','route'=>['usuarios.destroy', $usuario->id], 'style'=>'display:inline']) !!}
-                    {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return DeleteFunction()']) !!}
-
-                    {!! Form::close() !!}
+                  <td>
+                  {{-- laravel Collective  --}}
+                  {!! Form::open(['method'=>'DELETE','route'=>['usuarios.destroy', $usuario->id], 'style'=>'display:inline']) !!}
+                  {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return DeleteFunction()']) !!}
+                  
+                  {!! Form::close() !!}
 
                   </td>
+                  
                 </tr>
                 @endif
                 @endforeach

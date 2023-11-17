@@ -32,82 +32,93 @@ GRADOS
 
             <form method="POST" action="{{ route('grado.seccion.save') }}">
               @csrf
-             <div class="form-group">
+              <div class="form-group">
 
-               <input  type="hidden" name="id_grado" value="{{$id_grado}}">
-               
-               <label for="seccion">Sección:</label>
-               <select class="form-control w-25" required name="seccion" id="seccion">
-                 
-                 <option value="A">A</option>
-                 <option value="B">B</option>
-                 <option value="C">C</option>
+                <input type="hidden" name="id_grado" value="{{$id_grado}}">
+
+                <label for="seccion">Sección:</label>
+                <select class="form-control w-25" required name="seccion" id="seccion">
+
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
                 </select>
                 <br>
                 <label for="cupos">Cupos</label>
                 <input required id="cupos" class="w-25 form-control" type="number" name="cupos">
                 <br>
-               
-                <label >Docente</label>
+
+                <label>Docente</label>
                 <br>
-                <select required name="docente" class="form-control w-25 select2" name="docente" >
+                <select required name="docente" class="form-control w-25 select2" name="docente">
                   <option value="">Elija una opcion</option>
-                @foreach($docentes as $d)
-                @if($d->email!="admin@admin.com")
-                <option value="{{$d->id}}">{{$d->name}}</option>
-                @endif
-                @endforeach
-              </select>
+                  @foreach($docentes as $d)
+                  @if($d->email!="admin@admin.com")
+                  <option value="{{$d->id}}">{{$d->name}}</option>
+                  @endif
+                  @endforeach
+                </select>
+
+
+              </div>
+              <div class="row">
+
+
+                  <button class="me-2 ms-3 btn w-25 form-control btn-outline-primary rounded px-3 py-1" type="submit">Asignar</button>
                 
-               <br>
-              <br>
-              <button class="ms-3 btn w-25 form-control btn-primary rounded px-3 py-1" type="submit">Asignar</button>
-            </div>
             </form>
-            <hr>
 
 
+              <button onclick="history.back()" class="w-25 btn btn-outline-primary">
+                Regresar
+              </button>
 
-
-            <table class="table table-striped table-bordered  table-sm text-center" style="width:100%; border:2px;" id="order_table">
-              <thead style="background-color:#315d9a;">
-
-                <th class="w-50 text-center" style="color: #fff;">Grado</th>
-                <th class="text-center" style="color: #fff;">Seccion</th>
-                <th class="text-center" style="color: #fff;">Docente</th>
-                <th class="text-center" style="color: #fff;">Cupos</th>
-                <th class="text-center" style="color: #fff;">Quitar</th>
-              </thead>
-              <tbody>
-                @foreach ($data as $d)
-                <tr>
-
-                  <td>{{$d->nombre}}</td>
-                  <td>{{$d->seccion}}</td>
-                  <td>{{$d->name}}</td>
-                  <td>{{$d->cupos}}</td>
-                  <td>
-                    <form method="POST" action="{{ route('grado.seccion.eliminar') }}">
-                      @csrf
-                      @method('DELETE')
-                      <input type="hidden" name="id_grado" value="{{ $d->grado_id_grado }}">
-                      <input type="hidden" name="seccion" value="{{ $d->seccion }}">
-                      <button class="btn btn-primary px-1 py-1 rounded fas fa-trash" type="submit"></button>
-                    </form>
-
-
-                  </td>
-
-                </tr>
-
-                @endforeach
-              </tbody>
-            </table>
-            {{-------------------------- FINAL ---------------------------}}
           </div>
+          <hr>
+
+           <table class="table table-striped table-bordered table-sm text-center" style="width:100%; border:2px;" id="order_table">
+            <thead style="background-color:#315d9a;">
+
+              <th class="w-50 text-center" style="color: #fff;">Grado</th>
+              <th class="text-center" style="color: #fff;">Seccion</th>
+              <th class="text-center" style="color: #fff;">Docente</th>
+              <th class="text-center" style="color: #fff;">Cupos</th>
+              <th class="text-center" style="color: #fff;">Año</th>
+              <th class="text-center" style="color: #fff;">Quitar</th>
+
+            </thead>
+            <tbody>
+              @foreach ($data as $d)
+              <tr>
+
+                <td>{{$d->nombre}}</td>
+                <td>{{$d->seccion}}</td>
+                <td>{{$d->name}}</td>
+                <td>{{$d->cupos}}</td>
+                <td>{{$d->year}}</td>
+                <td>
+                  <form method="POST" onsubmit="return DeleteFunction()" action="{{ route('grado.seccion.eliminar') }}">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="id_grado" value="{{ $d->grado_id_grado }}">
+                    <input type="hidden" name="seccion" value="{{ $d->seccion }}">
+                    <button class="btn btn-danger px-1 py-1 rounded fas fa-trash" type="submit"></button>
+                  </form>
+
+
+
+                </td>
+
+              </tr>
+
+              @endforeach
+            </tbody>
+          </table>
+          {{-------------------------- FINAL ---------------------------}}
         </div>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -135,12 +146,22 @@ GRADOS
     });
 
   });
+
+  function DeleteFunction() {
+    if (confirm('¿seguro que deseas borrar esta seccion?'))
+      return true;
+    else {
+      return false;
+    }
+  }
+
+
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('.select2').select2();
-    });
+  $(document).ready(function() {
+    $('.select2').select2();
+  });
 </script>
 
 @endsection

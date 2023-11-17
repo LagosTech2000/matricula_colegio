@@ -26,3 +26,17 @@ Route::get('/papas/identidades', function (Request $request) {
        
 });
 
+
+Route::get('/alumnos/papas', function (Request $request) {
+    
+    $pa = DB::table('padrexalumno')
+    ->join('padres', 'padres.id_padre', 'padrexalumno.padre_id')
+    ->where('padrexalumno.alumno_id', '=', $request->id_alumno)
+    ->get();
+
+    return response()->json($pa, 200, [], JSON_PRETTY_PRINT);
+       
+}); 
+
+
+

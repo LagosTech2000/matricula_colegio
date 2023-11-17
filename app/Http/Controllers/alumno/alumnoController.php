@@ -33,13 +33,17 @@ class alumnoController extends Controller
     {
         $nombre =  $request->nombre;
         $apellido = $request->apellido;
+        $direccion = $request->direccion;
+        $telefono = $request->telefono;
 
-        if (strlen($nombre) > 6 and strlen($apellido) > 6) {
+        if (strlen($nombre) > 4 and strlen($apellido) > 4) {
 
             DB::table("alumnos")->insert(
                 [
-                    'nombre' => $request->nombre,
-                    'apellido' => $request->apellido,
+                    'nombre' => $nombre,
+                    'apellido' => $apellido,
+                    'direccion' => $direccion,
+                    'telefono' => $telefono,
                     'matriculado' => 0
 
                 ]
@@ -76,14 +80,17 @@ class alumnoController extends Controller
     {
         $nombre =  $request->nombre;
         $apellido = $request->apellido;
+        $direccion = $request->direccion;
+        $telefono = $request->telefono;
 
-        if (strlen($nombre) > 6 and strlen($apellido) > 6) {
+
+        if (strlen($nombre) > 4 and strlen($apellido) > 4) {
 
             DB::table("alumnos")->where('id_alumno', '=', $request->id_alumno)->update(
-                [
-                    'nombre' => $request->nombre,
-                    'apellido' => $request->apellido
-                ]
+                ['nombre' => $nombre,
+                    'apellido' => $apellido,
+                    'direccion' => $direccion,
+                    'telefono' => $telefono ]
             );
 
             Session::flash('noti', 'Se guardo el alumno!');

@@ -20,11 +20,11 @@ MATRICULA
     @else
     {{-------------------------- CUSTOM ALERT INICIO----------------------------------------}}
     <!-- HTML para el alert personalizado utilizando Bootstrap -->
-    <div id="custom-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+    <div id="custom-alert" class="d-none alert alert-success alert-dismissible fade show" role="alert">
         <button type="button" class="close" onclick="cerrarAlerta()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <p class="fs-3" id="alert-message">Bienvenido a la plataforma de matricula {{$year}}!</p>
+        <p class=" fs-3" id="alert-message">Bienvenido a la plataforma de matricula {{$year}}!</p>
 
     </div>
 
@@ -53,7 +53,7 @@ MATRICULA
                                     @csrf
                                     @if(isset($nuevo))
                                     <input type="hidden" name="nuevo" value="{{$nuevo}}">
-                                    <h5 for="nombre">Datos del Alumno</h5>
+                                    <h5 for="nombre">Datos del Estudiante</h5>
                                     <br>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -69,11 +69,12 @@ MATRICULA
                                     @else
 
                                     @if($cuenta_alumnos >0)
-                                    <h5 for="nombre">Seleccionar Alumno(a)</h5>
+                                    <h5 for="nombre">Seleccionar Estudiante</h5>
                                     <br>
                                     <div class="form-group">
-                                        <label for="alumno">Alumnos disponibles para matricula</label>
-                                        <select required class="select2 form-control" name="id_alumno" id="id_alumno">
+                                        <label for="alumno">Estudiantes disponibles para matricula</label>
+                                        <br>
+                                        <select required class="w-25 select2 form-control" name="id_alumno" id="id_alumno">
                                             <option default value="0">Seleccionar</option>
                                             @foreach($alumno as $a)
                                             <option value="{{$a->id_alumno}}">{{$a->nombre}} {{$a->apellido}}</option>
@@ -131,8 +132,9 @@ MATRICULA
                                     <h5 for="nombre">Seleccionar Encargado(a)</h5>
                                     <br>
                                     <div class="form-group">
-                                        <label for="alumno">Padres registrado en el sistema</label>
-                                        <select required class="select2 form-control" name="id_padre" id="id_padre">
+                                        <label for="alumno">Encargados registrado en el sistema</label>
+                                        <br>
+                                        <select required class="w-25 select2 form-control" name="id_padre" id="id_padre">
                                             <option default value="0">Seleccionar</option>
                                             @foreach($padres as $p)
                                             <option value="{{$p->id_padre}}">{{$p->nombre}} {{$p->apellido}}</option>
@@ -306,7 +308,7 @@ MATRICULA
     function validarDni() {
         const identidad = document.getElementById("padre_identidad").value;
         const error_identidad = document.getElementById("error_identidad");
-        const apiUrl = '/matricula/public/api/papas/identidades?padre_identidad=' + identidad;
+        const apiUrl = '/matricula_colegio/matricula_colegio/public/api/papas/identidades?padre_identidad=' + identidad;
         const enviar_matricula = document.getElementById('enviar_matricula');
 
         if (identidad.length < 13 && identidad.length > 0) {
@@ -323,16 +325,16 @@ MATRICULA
 
                 })
                 .then((data) => {
-                    if (JSON.stringify(data>4) ) {
+                    if (JSON.stringify(data ) >0     ){
                         error_identidad.classList.remove('d-none');
-                        error_identidad.innerText = 'El encargado ya ha llegado al limite de registro (5 alumnos)'
+                        error_identidad.innerText = 'El encargado ya ha sido registrado, elegir alguien a alguien mas!';
                         enviar_matricula.disabled = true;
                     } else {
                         error_identidad.classList.add('d-none');
                         enviar_matricula.disabled = false;
                         
                     }
-                    9
+                    
                 })
                 .catch((error) => {
                     mostrarAlert('Error: ' + error.message);
